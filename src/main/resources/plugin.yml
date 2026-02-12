@@ -4,3 +4,4 @@ main: xyz.realplussmp.lSCore.LSCore
 api-version: '1.21'
 authors: [ mrrpmeowfurry ]
 description: Core plugin for lifesteal
+folia-supported: true
