@@ -30,6 +30,8 @@ tasks {
         downloadPlugins {
             // base plugins, e.g. vault and other stuff
             modrinth("VaultUnlocked", "2.19.0")
+            modrinth("ViaVersion", "5.7.1")
+            modrinth("ViaBackwards", "5.7.1")
         }
         minecraftVersion("1.21.11")
     }

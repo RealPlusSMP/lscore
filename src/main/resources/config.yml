@@ -1,0 +1,8 @@
+punishments:
+  ban-duration: 1 days # probably would not work, but just there until i decide to implement it
+  ban-reason: "<red>You ran out of hearts."
+
+hearts:
+  default: 10
+  max: 20
+  min: 1

@@ -2,53 +2,48 @@ package xyz.realplussmp.lSCore.listener;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.realplussmp.lSCore.manager.ConfigManager;
 import xyz.realplussmp.lSCore.manager.DataManager;
 import xyz.realplussmp.lSCore.manager.HeartManager;
 
+import java.time.Duration;
 import java.util.UUID;
 
 public class DeathListener implements Listener {
 
+    private final JavaPlugin plugin;
     private final HeartManager heartManager;
     private final DataManager dataManager;
+    private final ConfigManager config;
 
-    private final int stealAmount;
-    private final int minHearts;
-    private final boolean banOnMinHearts;
-
-    private final JavaPlugin plugin;
-
-    public DeathListener(JavaPlugin plugin, HeartManager heartManager, DataManager dataManager, int stealAmount, boolean banOnMinHearts, int minHearts) {
+    public DeathListener(JavaPlugin plugin, HeartManager heartManager, DataManager dataManager, ConfigManager config) {
         this.plugin = plugin;
         this.heartManager = heartManager;
         this.dataManager = dataManager;
-        this.stealAmount = stealAmount;
-        this.banOnMinHearts = banOnMinHearts;
-        this.minHearts = minHearts;
+        this.config = config;
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         Player victim = event.getEntity();
-        Player killer = victim.getKiller();
-
-        if (killer == null) return;
-        if (killer.getUniqueId().equals(victim.getUniqueId())) return;
-
         UUID victimUUID = victim.getUniqueId();
 
+        int minHearts = config.getMinHearts();
+
         // remove hearts from victim
-        heartManager.removeHearts(victimUUID, stealAmount);
+        heartManager.removeHearts(victimUUID, 1);
 
         // drop hearts at victim's location
         // TODO: implement item for heart
-        for (int i = 0; i < stealAmount; i++) {
+        for (int i = 0; i < 1; i++) {
             victim.getWorld().dropItemNaturally(victim.getLocation(), new ItemStack(Material.STONE, 1));
         }
 
@@ -59,16 +54,16 @@ public class DeathListener implements Listener {
         dataManager.saveHearts(victimUUID, heartManager.getHearts(victimUUID));
 
         // elimination check
-        if (banOnMinHearts) {
-            int victimHearts = heartManager.getHearts(victimUUID);
+        int victimHearts = heartManager.getHearts(victimUUID);
 
-            if (victimHearts <= minHearts) {
-                Bukkit.getScheduler().runTaskLater(plugin, () -> eliminate(victim), 20L);
-            }
+        // victimhearts can't get below 1 so this is a shitty fix.
+        if (victimHearts == minHearts) {
+            eliminate(victim);
         }
     }
 
     private void eliminate(Player victim) {
-        // TODO: think of what todo when victim is eliminate
+        // TODO: make this grab the ban duration from configuration
+        victim.banIp(config.getBanReason(), Duration.ofDays(1), null, true);
     }
 }
