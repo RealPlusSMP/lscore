@@ -5,3 +5,8 @@ api-version: '1.21'
 authors: [ mrrpmeowfurry ]
 description: Core plugin for lifesteal
 folia-supported: true
+commands:
+  revive:
+    description: Revive a player
+    usage: /revive <player>
+    permission: lscore.revive

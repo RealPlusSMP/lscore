@@ -1,16 +1,10 @@
 package xyz.realplussmp.lSCore.listener;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.realplussmp.lSCore.item.HeartItem;
 import xyz.realplussmp.lSCore.manager.ConfigManager;
@@ -71,6 +65,6 @@ public class DeathListener implements Listener {
 
         // Component cannot be used in banIp so we parsed it as normal string. should work
         String banReason = LegacyComponentSerializer.legacySection().serialize(MessageUtil.get(config.getBanReason()));
-        victim.banIp(banReason, Duration.ofDays(1), null, true);
+        victim.ban(banReason, Duration.ofDays(1), null, true);
     }
 }

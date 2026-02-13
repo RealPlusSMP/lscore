@@ -2,6 +2,12 @@ punishments:
   ban-duration: 1 days # probably would not work, but just there until i decide to implement it
   ban-reason: "<red>You ran out of hearts."
 
+revive:
+  revive-message: "<#ff0000>❤ <dark_gray>» <gray>You have been revived. Try not to die again."
+
+error:
+  player-not-found: "<#ff0000>This player could not be found."
+
 hearts:
   default: 10
   max: 20
