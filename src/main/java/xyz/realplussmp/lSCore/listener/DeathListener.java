@@ -1,5 +1,6 @@
 package xyz.realplussmp.lSCore.listener;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -69,7 +70,7 @@ public class DeathListener implements Listener {
         // TODO: make this grab the ban duration from configuration
 
         // Component cannot be used in banIp so we parsed it as normal string. should work
-        String banReason = PlainTextComponentSerializer.plainText().serialize(MessageUtil.get(config.getBanReason()));
+        String banReason = LegacyComponentSerializer.legacySection().serialize(MessageUtil.get(config.getBanReason()));
         victim.banIp(banReason, Duration.ofDays(1), null, true);
     }
 }
