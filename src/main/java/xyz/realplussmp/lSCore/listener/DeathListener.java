@@ -1,5 +1,6 @@
 package xyz.realplussmp.lSCore.listener;
 
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -10,9 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.realplussmp.lSCore.item.HeartItem;
 import xyz.realplussmp.lSCore.manager.ConfigManager;
 import xyz.realplussmp.lSCore.manager.DataManager;
 import xyz.realplussmp.lSCore.manager.HeartManager;
+import xyz.realplussmp.lSCore.util.MessageUtil;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -44,7 +47,7 @@ public class DeathListener implements Listener {
         // drop hearts at victim's location
         // TODO: implement item for heart
         for (int i = 0; i < 1; i++) {
-            victim.getWorld().dropItemNaturally(victim.getLocation(), new ItemStack(Material.STONE, 1));
+            victim.getWorld().dropItemNaturally(victim.getLocation(), HeartItem.create(1));
         }
 
         // sync health
@@ -64,6 +67,9 @@ public class DeathListener implements Listener {
 
     private void eliminate(Player victim) {
         // TODO: make this grab the ban duration from configuration
-        victim.banIp(config.getBanReason(), Duration.ofDays(1), null, true);
+
+        // Component cannot be used in banIp so we parsed it as normal string. should work
+        String banReason = PlainTextComponentSerializer.plainText().serialize(MessageUtil.get(config.getBanReason()));
+        victim.banIp(banReason, Duration.ofDays(1), null, true);
     }
 }

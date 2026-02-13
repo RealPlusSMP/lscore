@@ -1,6 +1,7 @@
 package xyz.realplussmp.lSCore;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.realplussmp.lSCore.item.HeartItem;
 import xyz.realplussmp.lSCore.listener.DeathListener;
 import xyz.realplussmp.lSCore.listener.PlayerDataListener;
 import xyz.realplussmp.lSCore.manager.ConfigManager;
@@ -28,6 +29,9 @@ public final class LSCore extends JavaPlugin {
                 config.getMinHearts(),
                 config.getMaxHearts()
         );
+
+        // harditem
+        HeartItem.init(this);
 
         getServer().getPluginManager().registerEvents(new PlayerDataListener(heartManager, dataManager, config), this);
         getServer().getPluginManager().registerEvents(new DeathListener(this, heartManager, dataManager, config), this);
